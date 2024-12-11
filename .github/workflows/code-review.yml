@@ -25,7 +25,7 @@ jobs:
         id: changed_files
         run: |
           git fetch --depth=2
-          git diff --name-only HEAD~1 HEAD -- '*.*' > changed_files.txt
+          git diff --name-only HEAD~1 HEAD -- '*.py' > changed_files.txt
 
       # Step 4: Run the LLM tool on changed files
       - name: Run LLM Code Review
@@ -35,4 +35,5 @@ jobs:
             python ./KosharyCodeCli.py $(cat changed_files.txt)
           else
             echo "No Python files were modified in this push."
+          fi
 
