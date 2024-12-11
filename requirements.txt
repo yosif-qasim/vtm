@@ -3,7 +3,6 @@ langchain_core
 langchain_openai
 langgraph
 typing
-sys
 Django==5.1.2
 mysqlclient
 pytz
