@@ -1,0 +1,38 @@
+name: LLM Code Review
+
+on:
+  push:
+    branches:
+      - main  # Adjust based on your default branch.
+
+jobs:
+  code-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Match your tool's requirements.
+
+      # Step 3: Extract changed files
+      - name: Get changed files
+        id: changed_files
+        run: |
+          git fetch --depth=2
+          git diff --name-only HEAD~1 HEAD -- '*.*' > changed_files.txt
+
+      # Step 4: Run the LLM tool on changed files
+      - name: Run LLM Code Review
+        run: |
+          if [ -s changed_files.txt ]; then
+            echo "Running tool on changed files..."
+            python ./KosharyCodeCli.py $(cat changed_files.txt)
+          else
+            echo "No Python files were modified in this push."
+
